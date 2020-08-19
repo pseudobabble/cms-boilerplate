@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load static %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block body_class %}template-homepage{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'assets/css/normalize.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/skeleton.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/extra.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+
+<div class="container">
+
+    <nav class="row">
+        <div class="twelve columns u-full-width">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="{% slugurl 'exhibitions' %}">Exhibitions</a></li>
+                <li><a href="">Workshops</a></li>
+                <li><a href="">Artists</a></li>
+                <li><a href="">Mission</a></li>
+                <li><a href="">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- columns should be the immediate child of a .row -->
+    <div class="row">
+        <div class="one column"></div>
+        <div class="ten columns">
+            <h1>{{ page.page_title }}</h1>
+        </div>
+        <div class="one column"></div>
+    </div>
+    <div class="row">
+        <div class="one column"></div>
+        <div class="ten columns">
+            <h3>{{ page.strapline }}</h3>
+        </div>
+        <div class="one column"></div>
+    </div>
+
+
+    {% for exhibition in page.get_children %}
+        <div class="row">
+            <div class="one column"></div>
+            <a href="{% pageurl exhibition %}">
+                <div class="ten columns" id="exhibition-card">
+                    {% image exhibition.specific.flyer_image width-800 as flyer_image %}
+                    <img src="{{ flyer_image.url }}">
+                    <h2>{{ exhibition.specific.page_title }}</h2>
+                    <h4>{{ exhibition.specific.strapline }}</h4>
+                </div>
+            </a>
+            <div class="one column"></div>
+        </div>
+    {% endfor %}
+
+
+</div>
+
+{% endblock %}
+

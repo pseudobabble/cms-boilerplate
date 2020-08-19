@@ -17,8 +17,8 @@
     <nav class="row">
         <div class="twelve columns u-full-width">
             <ul>
-                <li><a href="">Home</a></li>
-                <li><a href="">Exhibitions</a></li>
+                <li><a href="/">Home</a></li>
+                <li><a href="{% slugurl 'exhibitions' %}">Exhibitions</a></li>
                 <li><a href="">Workshops</a></li>
                 <li><a href="">Artists</a></li>
                 <li><a href="">Mission</a></li>
@@ -64,7 +64,7 @@
                         <div class="one column"></div>
                         <div class="ten columns">
                             <p class="block-{{ block.block_type }}">
-                                {{ block.value }}
+                                {{ block.value|richtext }}
                             </p>
                         <div class="one column"></div>
                     {% endif %}
@@ -73,7 +73,7 @@
                         {% image block.value width-800 as stream_block%}
                         <div class="one column"></div>
                         <div class="ten columns">
-                        <img src="{{ stream_block.url }}">
+                        <img class="block-{{ block.block_type }}" src="{{ stream_block.url }}">
                         </div>
                         <div class="one column"></div>
                     {% endif %}

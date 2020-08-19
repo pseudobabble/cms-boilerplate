@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% load static %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block body_class %}template-homepage{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'assets/css/normalize.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/skeleton.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/extra.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+
+    <div class="container">
+
+        <nav class="row">
+            <div class="twelve columns u-full-width">
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="{% slugurl 'exhibitions' %}">Exhibitions</a></li>
+                    <li><a href="">Workshops</a></li>
+                    <li><a href="">Artists</a></li>
+                    <li><a href="">Mission</a></li>
+                    <li><a href="">Contact</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="row">
+            <div class="one column"></div>
+            <div class="ten columns" id="exhibition-card">
+                {% image page.flyer_image width-800 as flyer_image %}
+                <img src="{{ flyer_image.url }}">
+                <h1>{{ page.page_title }}</h1>
+                <h4>{{ page.strapline }}</h4>
+            </div>
+            <div class="one column"></div>
+        </div>
+
+        <div class="row" id="stream">
+            {% for block in page.page_stream %}
+                <div class="row">
+                    {% if block.block_type == 'heading' %}
+                        <div class="one column"></div>
+                        <div class="ten columns">
+                            <h2 class="block-{{ block.block_type }}">
+                                {{ block.value }}
+                            </h2>
+                        </div>
+                        <div class="one column"></div>
+                    {% endif %}
+
+                    {% if block.block_type == 'paragraph' %}
+                        <div class="one column"></div>
+                        <div class="ten columns">
+                        <p class="block-{{ block.block_type }}">
+                            {{ block.value|richtext }}
+                        </p>
+                        <div class="one column"></div>
+                    {% endif %}
+
+                    {% if block.block_type == 'image' %}
+                        {% image block.value width-800 as stream_block %}
+                        <div class="one column"></div>
+                        <div class="ten columns">
+                            <img class="block-{{ block.block_type }}" src="{{ stream_block.url }}">
+                        </div>
+                        <div class="one column"></div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+
+        <div class="row" id="images">
+            {% for image in page.exhibition_images.all %}
+                {% image image.image original as exhibition_image %}
+                {% image image.image fill-250x250 as thumbnail %}
+                    <div class="four columns">
+                        <a class="spotlight" href="{{ exhibition_image.url }}">
+                            <img src="{{ thumbnail.url }}">
+                        </a>
+                    </div>
+                    {# three columns, and dont create an extra row on the last loop #}
+                    {% if forloop.counter|divisibleby:"3" and not forloop.last %}
+                        {# close the row div#}
+                        </div><div class="row">
+                    {%  endif %}
+            {% endfor %}
+        </div>
+
+
+    </div>
+
+
+
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'assets/js/spotlight.bundle.js' %}"></script>
+{% endblock %}
