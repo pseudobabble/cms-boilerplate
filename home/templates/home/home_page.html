@@ -1,21 +1,89 @@
 {% extends "base.html" %}
 {% load static %}
+{% load wagtailcore_tags wagtailimages_tags %}
 
 {% block body_class %}template-homepage{% endblock %}
 
 {% block extra_css %}
-
-{% comment %}
-Delete the line below if you're just getting started and want to remove the welcome screen!
-{% endcomment %}
-<link rel="stylesheet" href="{% static 'css/welcome_page.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/normalize.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/skeleton.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/extra.css' %}">
 {% endblock extra_css %}
 
 {% block content %}
 
-{% comment %}
-Delete the line below if you're just getting started and want to remove the welcome screen!
-{% endcomment %}
-{% include 'home/welcome_page.html' %}
+<div class="container">
 
-{% endblock content %}
+    <nav class="row">
+        <div class="twelve columns u-full-width">
+            <ul>
+                <li><a href="">Home</a></li>
+                <li><a href="">Exhibitions</a></li>
+                <li><a href="">Workshops</a></li>
+                <li><a href="">Artists</a></li>
+                <li><a href="">Mission</a></li>
+                <li><a href="">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- columns should be the immediate child of a .row -->
+    <div class="row">
+        <div class="one column"></div>
+        <div class="ten columns">
+            <h1>{{ page.hero_text }}</h1>
+        </div>
+        <div class="one column"></div>
+    </div>
+    {% image page.hero_background width-800 as hero_background %}
+    <div class="row">
+        <div class="one column"></div>
+        <div class="ten columns">
+            <img src="{{ hero_background.url }}">
+        </div>
+        <div class="one column"></div>
+    </div>
+
+    <div class="row" id="stream">
+
+            {% for block in page.page_stream %}
+
+                <div class="row">
+
+                    {% if block.block_type == 'heading' %}
+                        <div class="one column"></div>
+                        <div class="ten columns">
+                            <h2 class="block-{{ block.block_type }}">
+                                {{ block.value }}
+                            </h2>
+                        </div>
+                        <div class="one column"></div>
+                    {% endif %}
+
+                    {% if block.block_type == 'paragraph' %}
+                        <div class="one column"></div>
+                        <div class="ten columns">
+                            <p class="block-{{ block.block_type }}">
+                                {{ block.value }}
+                            </p>
+                        <div class="one column"></div>
+                    {% endif %}
+
+                    {% if block.block_type == 'image' %}
+                        {% image block.value width-800 as stream_block%}
+                        <div class="one column"></div>
+                        <div class="ten columns">
+                        <img src="{{ stream_block.url }}">
+                        </div>
+                        <div class="one column"></div>
+                    {% endif %}
+
+                </div>
+            {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}
+
