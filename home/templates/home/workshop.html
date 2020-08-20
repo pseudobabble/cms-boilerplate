@@ -18,9 +18,7 @@
 
         <div class="row">
             <div class="one column"></div>
-            <div class="ten columns" id="exhibition-card">
-                {% image page.flyer_image width-800 as flyer_image %}
-                <img src="{{ flyer_image.url }}">
+            <div class="ten columns" id="workshop-card">
                 <h1>{{ page.page_title }}</h1>
                 <h4>{{ page.strapline }}</h4>
             </div>
@@ -63,11 +61,11 @@
         </div>
 
         <div class="row" id="images">
-            {% for image in page.exhibition_images.all %}
-                {% image image.image original as exhibition_image %}
+            {% for image in page.workshop_images.all %}
+                {% image image.image original as workshop_image %}
                 {% image image.image fill-250x250 as thumbnail %}
                 <div class="four columns">
-                    <a class="spotlight" href="{{ exhibition_image.url }}">
+                    <a class="spotlight" href="{{ workshop_image.url }}">
                         <img src="{{ thumbnail.url }}">
                     </a>
                 </div>

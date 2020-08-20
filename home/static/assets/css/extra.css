@@ -25,3 +25,17 @@ nav ul li a {
   text-decoration: none;
   color: #222222;
 }
+
+#artist-card a {
+  text-decoration: none;
+  color: #222222;
+}
+
+#workshop-card {
+  text-decoration: none;
+  color: #222222;
+}
+
+#artist-blurb {
+  padding-top: 10%;
+}

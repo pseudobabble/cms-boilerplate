@@ -14,18 +14,7 @@
 
 <div class="container">
 
-    <nav class="row">
-        <div class="twelve columns u-full-width">
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="{% slugurl 'exhibitions' %}">Exhibitions</a></li>
-                <li><a href="">Workshops</a></li>
-                <li><a href="">Artists</a></li>
-                <li><a href="">Mission</a></li>
-                <li><a href="">Contact</a></li>
-            </ul>
-        </div>
-    </nav>
+    {% include 'home/navbar.html' %}
 
     <!-- columns should be the immediate child of a .row -->
     <div class="row">

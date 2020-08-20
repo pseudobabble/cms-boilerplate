@@ -33,19 +33,20 @@
         </div>
 
 
-        {% for exhibition in page.get_children %}
-            <div class="row">
-                <div class="one column"></div>
-                <a href="{% pageurl exhibition %}">
-                    <div class="ten columns" id="exhibition-card">
-                        {% image exhibition.specific.flyer_image width-800 as flyer_image %}
-                        <img src="{{ flyer_image.url }}">
-                        <h2>{{ exhibition.specific.page_title }}</h2>
-                        <h4>{{ exhibition.specific.strapline }}</h4>
-                    </div>
+        {% for artist in page.get_children %}
+            {% image artist.specific.photo fill-250x250 as thumbnail %}
+            <div class="four columns" id="artist-card">
+                <a href="{% pageurl artist %}">
+                <h4>{{ artist.specific.name }}</h4>
+                    <img src="{{ thumbnail.url }}">
                 </a>
-                <div class="one column"></div>
             </div>
+            {# three columns, and dont create an extra row on the last loop #}
+            {% if forloop.counter|divisibleby:"3" and not forloop.last %}
+                {# close the row div#}
+                </div>
+                <div class="row">
+            {% endif %}
         {% endfor %}
 
 

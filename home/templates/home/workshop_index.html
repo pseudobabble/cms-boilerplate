@@ -33,15 +33,13 @@
         </div>
 
 
-        {% for exhibition in page.get_children %}
+        {% for workshop in page.get_children %}
             <div class="row">
                 <div class="one column"></div>
-                <a href="{% pageurl exhibition %}">
-                    <div class="ten columns" id="exhibition-card">
-                        {% image exhibition.specific.flyer_image width-800 as flyer_image %}
-                        <img src="{{ flyer_image.url }}">
-                        <h2>{{ exhibition.specific.page_title }}</h2>
-                        <h4>{{ exhibition.specific.strapline }}</h4>
+                <a href="{% pageurl workshop %}">
+                    <div class="ten columns" id="workshop-card">
+                        <h2>{{ workshop.specific.page_title }}</h2>
+                        <h4>{{ workshop.specific.strapline }}</h4>
                     </div>
                 </a>
                 <div class="one column"></div>
