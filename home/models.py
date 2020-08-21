@@ -15,7 +15,6 @@ class HomePage(Page):
     class Meta:
         verbose_name = 'homepage'
 
-
     hero_text = TextField(null=True, blank=True)
     hero_background = models.ForeignKey(
         'wagtailimages.Image',
@@ -40,7 +39,8 @@ class HomePage(Page):
     subpage_types = [
         'home.ExhibitionIndex',
         'home.WorkshopIndex',
-        'home.ArtistIndex'
+        'home.ArtistIndex',
+        'home.Mission'
     ]
 
 
@@ -211,7 +211,20 @@ class ArtistImage(Orderable):
 
 
 class Mission(Page):
-    pass
+    page_title = TextField(null=True, blank=True)
+    page_stream = StreamField([
+        ('heading', CharBlock()),
+        ('paragraph', RichTextBlock()),
+        ('image', ImageChooserBlock()),
+    ], null=True, blank=True)
+
+    content_panels = Page.content_panels + [
+        FieldPanel('page_title'),
+        StreamFieldPanel('page_stream'),
+    ]
+
+    parent_page_types = ['home.HomePage']
+    subpage_types = []
 
 
 class Contact(Page):

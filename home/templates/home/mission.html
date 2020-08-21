@@ -20,7 +20,6 @@
             <div class="one column"></div>
             <div class="ten columns" id="workshop-card">
                 <h1>{{ page.page_title }}</h1>
-                <h4>{{ page.strapline }}</h4>
             </div>
             <div class="one column"></div>
         </div>
@@ -31,9 +30,9 @@
                 {% if block.block_type == 'heading' %}
                     <div class="one column"></div>
                     <div class="ten columns">
-                        <h3 class="block-{{ block.block_type }}">
+                        <h2 class="block-{{ block.block_type }}">
                             {{ block.value }}
-                        </h3>
+                        </h2>
                     </div>
                     <div class="one column"></div>
                 {% endif %}
@@ -47,40 +46,19 @@
                     <div class="one column"></div>
                 {% endif %}
 
-            {% if block.block_type == 'image' %}
-                {% image block.value width-800 as stream_block %}
-                <div class="one column"></div>
-                <div class="ten columns">
-                    <img class="block-{{ block.block_type }}" src="{{ stream_block.url }}">
-                </div>
-                <div class="one column"></div>
-            {% endif %}
+                {% if block.block_type == 'image' %}
+                    {% image block.value width-800 as stream_block %}
+                    <div class="one column"></div>
+                    <div class="ten columns">
+                        <img class="block-{{ block.block_type }}" src="{{ stream_block.url }}">
+                    </div>
+                    <div class="one column"></div>
+                {% endif %}
             </div>
             {% endfor %}
             </div>
         </div>
-
-        <div class="row" id="images">
-            {% for image in page.workshop_images.all %}
-                {% image image.image original as workshop_image %}
-                {% image image.image fill-250x250 as thumbnail %}
-                <div class="four columns">
-                    <a class="spotlight" href="{{ workshop_image.url }}">
-                        <img src="{{ thumbnail.url }}">
-                    </a>
-                </div>
-                {# three columns, and dont create an extra row on the last loop #}
-                {% if forloop.counter|divisibleby:"3" and not forloop.last %}
-                    {# close the row div#}
-                    </div>
-                    <div class="row">
-                {% endif %}
-            {% endfor %}
-            </div>
-
-
     </div>
-
 
 
 {% endblock %}

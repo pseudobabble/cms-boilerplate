@@ -39,3 +39,7 @@ nav ul li a {
 #artist-blurb {
   padding-top: 10%;
 }
+
+.circle-image {
+  border-radius: 50%;
+}
