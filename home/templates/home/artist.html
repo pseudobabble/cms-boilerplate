@@ -4,49 +4,48 @@
 
 {% block body_class %}template-homepage{% endblock %}
 
-{% block extra_css %}
-    <link rel="stylesheet" href="{% static 'assets/css/normalize.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/css/skeleton.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/css/extra.css' %}">
-{% endblock extra_css %}
-
 {% block content %}
 
-    <div class="container">
+    <div class="container-fluid text-center">
 
         {% include 'home/navbar.html' %}
 
         <div class="row">
-            <div class="one column"></div>
-            <div class="ten columns">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-10">
                 <h2>{{ page.name }}</h2>
             </div>
-            <div class="one column"></div>
+            <div class="col-sm-1"></div>
         </div>
 
         <div class="row">
-            <div class="one column"></div>
-            <div class="five columns" id="artist-card">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-5" id="artist-card">
                 <a href="{{ page.portfolio_link }}">
                     {% image page.photo width-400 as artist_photo %}
-                    <img class="circle-image" src="{{ artist_photo.url }}">
+                    <img class="circle-image img-fluid" src="{{ artist_photo.url }}">
                 </a>
             </div>
-            <div class="five columns" id="artist-blurb">
+            <div class="col-sm-5" id="artist-blurb">
                 <h4>About</h4>
                 {{ page.blurb|richtext }}
             </div>
-            <div class="one column"></div>
+            <div class="col-sm-1"></div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <h4>Portfolio Pieces</h4>
+            </div>
         </div>
 
         <div class="row" id="images">
-        <h4>Portfolio Pieces</h4>
             {% for image in page.portfolio_pieces.all %}
                 {% image image.image original as portfolio_piece %}
                 {% image image.image fill-250x250 as thumbnail %}
-                <div class="four columns">
+                <div class="col-sm-4">
                     <a class="spotlight" href="{{ portfolio_piece.url }}">
-                        <img src="{{ thumbnail.url }}">
+                        <img class="img-fluid" src="{{ thumbnail.url }}">
                     </a>
                 </div>
                 {# three columns, and dont create an extra row on the last loop #}
