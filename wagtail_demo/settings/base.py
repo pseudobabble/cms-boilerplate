@@ -60,6 +60,9 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
 
     'wagtail.contrib.redirects.middleware.RedirectMiddleware',
+
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'wagtail_demo.urls'
@@ -160,3 +163,7 @@ WAGTAIL_SITE_NAME = "wagtail_demo"
 # Base URL to use when referring to full URLs within the Wagtail admin backend -
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
 BASE_URL = 'http://example.com'
+
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000',
+]
