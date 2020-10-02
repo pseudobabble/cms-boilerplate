@@ -2,7 +2,10 @@
 
 from rest_framework.fields import Field
 from wagtail.api.v2.serializers import BaseSerializer
-from wagtail.images.api.v2.serializers import ImageSerializer
+from wagtail.images.api.v2.serializers import ImageSerializer as WagtailImageSerializer
+from wagtail.images.models import Image
+
+from home.models import SoundbiteImage
 
 
 class MediaDownloadUrlField(Field):
@@ -37,6 +40,14 @@ class MediaSerializer(BaseSerializer):
     artist = ArtistField(read_only=True)
 
 
-class ImageSerializer(ImageSerializer):
+class ImageSerializer(WagtailImageSerializer):
     artist = ArtistField(read_only=True)
+
+
+class SoundbiteImageSerializer(WagtailImageSerializer):
+    class Meta:
+        model = SoundbiteImage
+        fields = '__all__'
+
+
 

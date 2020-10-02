@@ -1,3 +1,6 @@
 __pycache__/
 venv/
 /.idea/
+home/__pycache__
+wagtail_demo/__pycache__
+wagtail_demo/settings/__pycache__

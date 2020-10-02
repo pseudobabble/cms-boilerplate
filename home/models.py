@@ -1,9 +1,9 @@
 from django.contrib.auth.models import User
 from django.db import models
-from django.db.models import TextField, URLField
+from django.db.models import TextField, URLField, ForeignKey
 from modelcluster.fields import ParentalKey
 from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel, \
-    InlinePanel, MultiFieldPanel
+    InlinePanel, MultiFieldPanel, PageChooserPanel
 from wagtail.api import APIField
 
 from wagtail.core.models import Page, Orderable
@@ -21,7 +21,7 @@ class HomePage(Page):
 
     hero_text = TextField(null=True, blank=True)
     hero_background = models.ForeignKey(
-        'wagtailimages.Image',
+        'home.SoundbiteImage',
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
@@ -70,7 +70,7 @@ class Exhibition(Page):
     page_title = TextField(null=True, blank=True)
     strapline = TextField(null=True, blank=True)
     flyer_image = models.ForeignKey(
-        'wagtailimages.Image',
+        'home.SoundbiteImage',
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
@@ -91,68 +91,93 @@ class Exhibition(Page):
     ]
 
     parent_page_types = ['home.ExhibitionIndex']
-    subpage_types = []
+    subpage_types = ['home.Room']
 
 
     api_fields = [
         APIField('page_title'),
         APIField('strapline'),
         APIField('flyer_image'),
+    ]
+
+
+class Room(Page):
+    exhibition_page = models.ForeignKey(
+        'wagtailcore.Page',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+',
+    )
+    room_name = TextField(null=True, blank=True)
+    strapline = TextField(null=True, blank=True)
+    blurb = StreamField([
+        ('heading', CharBlock()),
+        ('paragraph', RichTextBlock()),
+        ('image', ImageChooserBlock()),
+    ], null=True, blank=True)
+
+    content_panels = Page.content_panels + [
+        FieldPanel('room_name'),
+        FieldPanel('strapline'),
+        StreamFieldPanel('blurb'),
+        MultiFieldPanel(
+            [
+                InlinePanel('exhibition_images', label='An image'),
+                InlinePanel('exhibition_media', label='A video or audio file'),
+            ],
+            heading='Exhibition Works'
+        ),
+        PageChooserPanel('exhibition_page', 'home.Exhibition'),
+    ]
+
+    parent_page_types = ['home.Exhibition']
+    subpage_types = []
+
+
+    api_fields = [
+        APIField('room_name'),
+        APIField('strapline'),
+        APIField('blurb'),
         APIField('exhibition_images'),
         APIField('exhibition_media'),
     ]
 
 
-
 class ExhibitionImage(Orderable):
-    page = ParentalKey(Exhibition, related_name='exhibition_images')
+    page = ParentalKey(Room, related_name='exhibition_images')
     image = models.ForeignKey(
-        'wagtailimages.Image',
+        'home.SoundbiteImage',
         on_delete=models.SET_NULL, related_name='+',
         null=True,
         blank=True
     )
-    artist = models.ForeignKey(
-        User,
-        on_delete=models.SET_NULL, related_name='+',
-        null=True,
-        blank=True
-    )
-    @property
-    def artist_name(self):
-        return '{} {}'.format(self.artist.first_name, self.artist.last_name)
 
-    room = models.CharField(max_length=500)
+    soundbite = models.ForeignKey(
+        'wagtailmedia.Media',
+        on_delete=models.SET_NULL, related_name='+',
+        null=True,
+        blank=True
+    )
 
     panels = [
         ImageChooserPanel('image'),
-        FieldPanel('artist'),
+        MediaChooserPanel('soundbite'),
     ]
 
 
+
 class ExhibitionMedia(Orderable):
-    page = ParentalKey(Exhibition, related_name='exhibition_media')
+    page = ParentalKey(Room, related_name='exhibition_media')
     media = models.ForeignKey(
         'wagtailmedia.Media',
         on_delete=models.SET_NULL, related_name='+',
         null=True,
         blank=True
     )
-    artist = models.ForeignKey(
-        User,
-        on_delete=models.SET_NULL, related_name='+',
-        null=True,
-        blank=True
-    )
-    @property
-    def artist_name(self):
-        return '{} {}'.format(self.artist.first_name, self.artist.last_name)
-
-    room = models.CharField(max_length=500)
 
     panels = [
         MediaChooserPanel('media'),
-        FieldPanel('artist'),
     ]
 
 
@@ -197,7 +222,7 @@ class Workshop(Page):
 class WorkshopImage(Orderable):
     page = ParentalKey(Workshop, related_name='workshop_images')
     image = models.ForeignKey(
-        'wagtailimages.Image',
+        'home.SoundbiteImage',
         on_delete=models.SET_NULL, related_name='+',
         null=True,
         blank=True
@@ -228,7 +253,7 @@ class ArtistIndex(Page):
 class Artist(Page):
     name = TextField(null=True, blank=True)
     photo = models.ForeignKey(
-        'wagtailimages.Image',
+        'home.SoundbiteImage',
         on_delete=models.SET_NULL, related_name='+',
         null=True,
         blank=True
@@ -254,7 +279,7 @@ class Artist(Page):
 class ArtistImage(Orderable):
     page = ParentalKey(Artist, related_name='portfolio_images')
     image = models.ForeignKey(
-        'wagtailimages.Image',
+        'home.SoundbiteImage',
         on_delete=models.SET_NULL, related_name='+',
         null=True,
         blank=True
