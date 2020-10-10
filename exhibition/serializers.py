@@ -54,6 +54,9 @@ class ImageSerializer(serializers.Serializer):
     title = serializers.CharField()
     soundbite = MediaSerializer()
     uploaded_by_user = UserSerializer()
+    blurb = serializers.CharField()
+    physical_height = serializers.FloatField()
+    physical_width = serializers.FloatField()
 
 
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+from rest_framework import serializers
 from rest_framework.fields import Field, CharField
 from rest_framework.serializers import ModelSerializer
 from wagtail.api.v2.serializers import BaseSerializer
@@ -61,6 +61,9 @@ class MediaSerializer(ModelSerializer):
 class SoundbiteImageSerializer(WagtailImageSerializer):
     download_url = MediaDownloadUrlField(read_only=True)
     soundbite = MediaSerializer()
+    blurb = serializers.CharField()
+    physical_height = serializers.FloatField
+    physical_width = serializers.FloatField
 
 
 

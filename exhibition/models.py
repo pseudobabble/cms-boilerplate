@@ -25,7 +25,13 @@ class Image:
             uploaded_by_user_id: Union[int, None],
             created_at: datetime,
             soundbite_id: Union[int, None],
+            blurb: Union[str, None],
+            physical_height: Union[int, None],
+            physical_width: Union[int, None],
     ):
+        self.physical_width = physical_width
+        self.physical_height = physical_height
+        self.blurb = blurb
         self.id = id
         self.soundbite = WagtailMedia.objects.filter(pk=soundbite_id).first()
         self.uploaded_by_user = User.objects.get(pk=uploaded_by_user_id)

@@ -21,7 +21,16 @@ class MediaAPIViewSet(BaseAPIViewSet):
 class ImagesAPIViewSet(BaseAPIViewSet):
     base_serializer_class = SoundbiteImageSerializer
     filter_backends = [FieldsFilter, OrderingFilter, SearchFilter]
-    body_fields = BaseAPIViewSet.body_fields + ['title', 'width', 'height', 'soundbite', 'file']
+    body_fields = BaseAPIViewSet.body_fields + [
+        'title',
+        'width',
+        'height',
+        'soundbite',
+        'file',
+        'blurb',
+        'physical_height',
+        'physical_width'
+    ]
     meta_fields = BaseAPIViewSet.meta_fields + ['tags']
     listing_default_fields = BaseAPIViewSet.listing_default_fields + ['title', 'tags']
     nested_default_fields = BaseAPIViewSet.nested_default_fields + ['title']
