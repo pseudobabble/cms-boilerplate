@@ -121,6 +121,25 @@ class Room(Page):
         FieldPanel('room_name'),
         FieldPanel('strapline'),
         StreamFieldPanel('blurb'),
+        PageChooserPanel('exhibition_page', 'home.Exhibition'),
+    ]
+
+    parent_page_types = ['home.Exhibition']
+    subpage_types = ['home.Wall']
+
+
+class Wall(Page):
+    room_page = models.ForeignKey(
+        'wagtailcore.Page',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+',
+    )
+    wall_name = TextField(null=True, blank=True)
+
+    content_panels = Page.content_panels + [
+        FieldPanel('wall_name'),
         MultiFieldPanel(
             [
                 InlinePanel('exhibition_images', label='An image'),
@@ -128,24 +147,15 @@ class Room(Page):
             ],
             heading='Exhibition Works'
         ),
-        PageChooserPanel('exhibition_page', 'home.Exhibition'),
+        PageChooserPanel('room_page', 'home.Room'),
     ]
 
-    parent_page_types = ['home.Exhibition']
+    parent_page_types = ['home.Room']
     subpage_types = []
 
 
-    api_fields = [
-        APIField('room_name'),
-        APIField('strapline'),
-        APIField('blurb'),
-        APIField('exhibition_images'),
-        APIField('exhibition_media'),
-    ]
-
-
 class ExhibitionImage(Orderable):
-    page = ParentalKey(Room, related_name='exhibition_images')
+    page = ParentalKey(Wall, related_name='exhibition_images')
     image = models.ForeignKey(
         'home.SoundbiteImage',
         on_delete=models.SET_NULL, related_name='+',
@@ -168,7 +178,7 @@ class ExhibitionImage(Orderable):
 
 
 class ExhibitionMedia(Orderable):
-    page = ParentalKey(Room, related_name='exhibition_media')
+    page = ParentalKey(Wall, related_name='exhibition_media')
     media = models.ForeignKey(
         'wagtailmedia.Media',
         on_delete=models.SET_NULL, related_name='+',

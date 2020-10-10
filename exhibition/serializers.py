@@ -12,7 +12,14 @@ from home.serializers import SoundbiteImageSerializer
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = '__all__'
+        fields = [
+            'email',
+            'first_name',
+            'last_name',
+            'groups',
+            'id',
+            'username'
+        ]
 
 
 class CollectionSerializer(serializers.ModelSerializer):
@@ -49,9 +56,15 @@ class ImageSerializer(serializers.Serializer):
     uploaded_by_user = UserSerializer()
 
 
-class RoomSerializer(serializers.Serializer):
+
+class WallSerializer(serializers.Serializer):
     media = MediaSerializer(many=True)
     images = ImageSerializer(many=True)
+
+
+class RoomSerializer(serializers.Serializer):
+    walls = WallSerializer(many=True)
+
 
 class ExhibitionSerializer(serializers.Serializer):
     page_title = fields.CharField()

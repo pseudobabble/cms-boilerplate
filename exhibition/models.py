@@ -71,11 +71,18 @@ class Media:
         self.collection = Collection.objects.get(pk=collection_id)
 
 
-
-class Room:
+class Wall:
     def __init__(self, media: List[Media], images: List[Image]):
         self.media = media
         self.images = images
+
+
+Walls = List[Wall]
+
+
+class Room:
+    def __init__(self, walls: Walls):
+        self.walls = walls
 
 
 RoomList = List[Room]

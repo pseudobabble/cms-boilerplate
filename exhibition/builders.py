@@ -9,7 +9,7 @@ from wagtailmedia.models import Media as WagtailMedia
 
 from home import models as home_models
 
-from .models import Exhibition, Room, Media, Image
+from .models import Exhibition, Room, Media, Image, Wall
 
 
 class ExhibitionBuilder:
@@ -35,23 +35,34 @@ class ExhibitionBuilder:
             home_exhibition.flyer_image_id,
             rooms
         )
-        print('build exhibition')
+
         return exhibition
 
     def _build_rooms(self, home_rooms):
         rooms = []
         for home_room in home_rooms:
-            images = self._build_images(home_room)
-            media = self._build_media(home_room)
+            walls = self._build_walls(home_room)
 
-            room = Room(media, images)
+            room = Room(walls)
             rooms.append(room)
-        print('build rooms')
         return rooms
 
-    def _build_media(self, home_room):
+    def _build_walls(self, home_room):
+        home_walls = QuerySet(home_models.Wall).filter(room_page=home_room.id)
+        walls = []
+        for home_wall in home_walls:
+
+            images = self._build_images(home_wall)
+            media = self._build_media(home_wall)
+
+            wall = Wall(media, images)
+            walls.append(wall)
+
+        return walls
+
+    def _build_media(self, home_wall):
         exhibition_media = QuerySet(home_models.ExhibitionMedia) \
-            .filter(page_id=home_room.id)
+            .filter(page_id=home_wall.id)
         exhibition_media_media_ids = [
             exhibition_media.media_id
             for exhibition_media
@@ -66,12 +77,11 @@ class ExhibitionBuilder:
             api_media_item = Media(**media_item)
             media.append(api_media_item)
 
-        print('build media')
         return media
 
-    def _build_images(self, home_room):
+    def _build_images(self, home_wall):
         exhibition_images = QuerySet(home_models.ExhibitionImage) \
-            .filter(page_id=home_room.id)
+            .filter(page_id=home_wall.id)
         exhibition_image_image_ids = [
             exhibition_image.image_id
             for exhibition_image
@@ -86,5 +96,4 @@ class ExhibitionBuilder:
             api_images_item = Image(**wagtail_image)
             images.append(api_images_item)
 
-        print('build images')
         return images
