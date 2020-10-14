@@ -10,7 +10,11 @@ from home.serializers import MediaSerializer, SoundbiteImageSerializer
 class MediaAPIViewSet(BaseAPIViewSet):
     base_serializer_class = MediaSerializer
     filter_backends = [FieldsFilter, OrderingFilter, SearchFilter]
-    body_fields = BaseAPIViewSet.body_fields + ['title', 'width', 'height']
+    body_fields = BaseAPIViewSet.body_fields + [
+        'title',
+        'width',
+        'height',
+    ]
     meta_fields = BaseAPIViewSet.meta_fields + ['tags', 'artist']
     listing_default_fields = BaseAPIViewSet.listing_default_fields + ['title', 'tags']
     nested_default_fields = BaseAPIViewSet.nested_default_fields + ['title']
@@ -29,7 +33,8 @@ class ImagesAPIViewSet(BaseAPIViewSet):
         'file',
         'blurb',
         'physical_height',
-        'physical_width'
+        'physical_width',
+        'uploaded_by_user'
     ]
     meta_fields = BaseAPIViewSet.meta_fields + ['tags']
     listing_default_fields = BaseAPIViewSet.listing_default_fields + ['title', 'tags']

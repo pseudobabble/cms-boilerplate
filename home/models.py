@@ -176,7 +176,6 @@ class ExhibitionImage(Orderable):
     ]
 
 
-
 class ExhibitionMedia(Orderable):
     page = ParentalKey(Wall, related_name='exhibition_media')
     media = models.ForeignKey(

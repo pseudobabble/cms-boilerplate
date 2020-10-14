@@ -1,14 +1,12 @@
 #!/usr/bin/env python
+from django.contrib.auth.models import User
 from rest_framework import serializers
-from rest_framework.fields import Field, CharField
+from rest_framework.fields import Field
 from rest_framework.serializers import ModelSerializer
-from wagtail.api.v2.serializers import BaseSerializer
+
 from wagtail.images.api.v2.serializers import ImageSerializer as WagtailImageSerializer
-from wagtail.images.models import Image
 
 from wagtailmedia.models import Media as WagtailMedia
-
-from home.models import SoundbiteImage
 
 
 class MediaDownloadUrlField(Field):
@@ -57,13 +55,23 @@ class MediaSerializer(ModelSerializer):
         fields = '__all__'
 
 
+class UserSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            'email',
+            'first_name',
+            'last_name',
+            'groups',
+            'id',
+            'username'
+        ]
+
 
 class SoundbiteImageSerializer(WagtailImageSerializer):
     download_url = MediaDownloadUrlField(read_only=True)
     soundbite = MediaSerializer()
     blurb = serializers.CharField()
-    physical_height = serializers.FloatField
-    physical_width = serializers.FloatField
-
-
-
+    physical_height = serializers.FloatField()
+    physical_width = serializers.FloatField()
+    uploaded_by_user = UserSerializer()
