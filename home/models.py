@@ -163,23 +163,15 @@ class ExhibitionImage(Orderable):
         blank=True
     )
 
-    soundbite = models.ForeignKey(
-        'wagtailmedia.Media',
-        on_delete=models.SET_NULL, related_name='+',
-        null=True,
-        blank=True
-    )
-
     panels = [
         ImageChooserPanel('image'),
-        MediaChooserPanel('soundbite'),
     ]
 
 
 class ExhibitionMedia(Orderable):
     page = ParentalKey(Wall, related_name='exhibition_media')
     media = models.ForeignKey(
-        'wagtailmedia.Media',
+        'home.CustomMedia',
         on_delete=models.SET_NULL, related_name='+',
         null=True,
         blank=True

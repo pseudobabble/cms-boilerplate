@@ -19,6 +19,4 @@ class CustomMediaForm(BaseMediaForm):
 class SoundbiteImageForm(BaseImageForm):
     soundbite = forms.ModelChoiceField(queryset=CustomMedia.objects.all())
 
-# TODO  15/10/2020 11:35: Create custom form for soundbite selection on Image - ModelChooserField?
-# I think the reason I get 'Select a valid choice. That choice is not one of the available choices.'
-# is because its gettign the name, not the id of the soundbite
+# TODO  15/10/2020 12:05: custom form for ExhibitionImage?

@@ -13,6 +13,8 @@ class MediaAPIViewSet(BaseAPIViewSet):
         'title',
         'width',
         'height',
+        'file',
+        'blurb'
     ]
     meta_fields = BaseAPIViewSet.meta_fields + ['tags', 'artist']
     listing_default_fields = BaseAPIViewSet.listing_default_fields + ['title', 'tags']

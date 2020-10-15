@@ -83,7 +83,7 @@ class MediaSerializer(serializers.BaseSerializer):
         representation['blurb'] = instance.blurb
         representation['created_at'] = instance.created_at
         representation['duration'] = instance.duration
-        representation['file'] = instance.file.url
+        representation['file'] = instance.file.url # TODO  15/10/2020 12:57: figure out how to make this a url
         representation['id'] = instance.id
         representation['title'] = instance.title
         representation['type'] = instance.type
