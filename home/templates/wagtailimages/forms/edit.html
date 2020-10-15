@@ -1,0 +1,5 @@
+{% extends "wagtailimages/forms/edit.html" %}
+
+{% block extra_fields %}
+    {% include "wagtailadmin/shared/field_as_li.html" with field=form.soundbite %}
+{% endblock extra_fields %}

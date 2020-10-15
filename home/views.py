@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 from wagtail.api.v2.filters import FieldsFilter, OrderingFilter, SearchFilter
 from wagtail.api.v2.views import BaseAPIViewSet
-from wagtailmedia.models import Media
 
-from home.models import SoundbiteImage
+from home.models import SoundbiteImage, CustomMedia
 from home.serializers import MediaSerializer, SoundbiteImageSerializer
 
 
@@ -19,7 +18,7 @@ class MediaAPIViewSet(BaseAPIViewSet):
     listing_default_fields = BaseAPIViewSet.listing_default_fields + ['title', 'tags']
     nested_default_fields = BaseAPIViewSet.nested_default_fields + ['title']
     name = 'media'
-    model = Media
+    model = CustomMedia
 
 
 class ImagesAPIViewSet(BaseAPIViewSet):

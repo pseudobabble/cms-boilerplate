@@ -1,12 +1,15 @@
 #!/usr/bin/env python
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from rest_framework.fields import Field
-from rest_framework.serializers import ModelSerializer
+from rest_framework.fields import Field, FileField
+from rest_framework.serializers import ModelSerializer, FileField
 
 from wagtail.images.api.v2.serializers import ImageSerializer as WagtailImageSerializer
 
+
 from wagtailmedia.models import Media as WagtailMedia
+from home.models import CustomMedia
+
 
 
 class MediaDownloadUrlField(Field):
@@ -49,12 +52,6 @@ class ArtistField(Field):
         return '{} {}'.format(model.uploaded_by_user.first_name, model.uploaded_by_user.last_name)
 
 
-class MediaSerializer(ModelSerializer):
-    class Meta:
-        model = WagtailMedia
-        fields = '__all__'
-
-
 class UserSerializer(ModelSerializer):
     class Meta:
         model = User
@@ -66,6 +63,39 @@ class UserSerializer(ModelSerializer):
             'id',
             'username'
         ]
+
+
+class MediaSerializer(serializers.BaseSerializer):
+    blurb = serializers.CharField()
+    created_at = serializers.DateTimeField()
+    duration = serializers.IntegerField()
+    file = serializers.FileField()
+    id = serializers.IntegerField()
+    title = serializers.CharField()
+    type = serializers.CharField()
+    uploaded_by_user = UserSerializer()
+
+    def to_internal_value(self, data):
+        pass
+
+    def to_representation(self, instance):
+        representation = {}
+        representation['blurb'] = instance.blurb
+        representation['created_at'] = instance.created_at
+        representation['duration'] = instance.duration
+        representation['file'] = instance.file.url
+        representation['id'] = instance.id
+        representation['title'] = instance.title
+        representation['type'] = instance.type
+        representation['uploaded_by_user'] = UserSerializer(instance.uploaded_by_user).data
+
+        return representation
+
+    def update(self, instance, validated_data):
+        pass
+
+    def create(self, validated_data):
+        pass
 
 
 class SoundbiteImageSerializer(WagtailImageSerializer):
